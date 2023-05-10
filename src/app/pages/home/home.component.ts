@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: [],
 })
 export class HomeComponent implements OnInit {
   public olympics$: Observable<Olympic[]> = of([]);
@@ -42,17 +42,24 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  _handleOlympics(olympics: Olympic[]) {
+  _handleOlympics(olympics: Olympic[]): void {
     const participations = olympics
       .map((olympic) => olympic.participations.map((p) => p.id))
       .flat();
 
-    const uniqueIds = new Set(participations);
+    this.noJOs = new Set(participations).size;
 
-    this.noJOs = uniqueIds.size;
+    const [countries, ids] = olympics.reduce(
+      ([countries, ids], curr) => {
+        countries.push(curr.country);
+        ids.push(curr.id);
+        return [countries, ids];
+      },
+      [[], []] as [string[], number[]]
+    );
 
-    this.pieChartLabels = olympics.map((o) => o.country);
-    this.pieChartIds = olympics.map((o) => o.id);
+    this.pieChartLabels = countries;
+    this.pieChartIds = ids;
 
     const medalCounts = olympics
       .map((o) =>
@@ -65,7 +72,7 @@ export class HomeComponent implements OnInit {
     this.pieChartDatasets[0].data = medalCounts;
   }
 
-  onChartClick(event: { event?: ChartEvent; active?: any[] }) {
+  onChartClick(event: { event?: ChartEvent; active?: any[] }): void {
     const index = event.active?.[0].index;
 
     if (index === undefined) return;

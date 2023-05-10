@@ -1,24 +1,21 @@
-<div class="p-4 flex flex-col items-center gap-y-4 font-light">
-  <h1 class="text-2xl bg-teal-600 px-8 py-1 w-max rounded-lg text-white">
+<div class="flex flex-col items-center p-4 font-light gap-y-4">
+  <h1 class="px-8 py-1 text-2xl text-white bg-teal-600 rounded-lg w-max">
     Medals per Country
   </h1>
   <div class="grid grid-cols-2 gap-x-8">
     <app-info-box title="Number of JOs" [value]="noJOs"></app-info-box>
     <app-info-box
       title="Number of countries"
-      [value]="(olympics$ | async)?.length"
-    ></app-info-box>
+      [value]="(olympics$ | async)?.length"></app-info-box>
   </div>
-  <hr />
   <canvas
-    class="w-96"
+    class="cursor-pointer w-96"
     baseChart
     [type]="'pie'"
     [datasets]="pieChartDatasets"
     [labels]="pieChartLabels"
     [options]="pieChartOptions"
     [legend]="pieChartLegend"
-    (chartClick)="onChartClick($event)"
-  >
+    (chartClick)="onChartClick($event)">
   </canvas>
 </div>

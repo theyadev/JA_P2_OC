@@ -5,9 +5,11 @@ import { OlympicService } from './core/services/olympic.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: [],
 })
 export class AppComponent implements OnInit {
+  title = 'olympic-games-starter';
+
   constructor(private olympicService: OlympicService) {}
 
   ngOnInit(): void {

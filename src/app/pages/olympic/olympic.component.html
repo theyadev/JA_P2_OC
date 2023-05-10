@@ -7,8 +7,7 @@
     <app-info-box title="Total number medals" [value]="medals"></app-info-box>
     <app-info-box
       title="Total number of athletes"
-      [value]="athletes"
-    ></app-info-box>
+      [value]="athletes"></app-info-box>
   </div>
 
   <canvas
@@ -19,8 +18,10 @@
     [datasets]="lineChartDatasets"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
-    [legend]="lineChartLegend"
-  >
+    [legend]="lineChartLegend">
   </canvas>
-  <a routerLink="" class="px-4 py-1 text-white bg-teal-600 rounded-lg mr-96">Go back</a>
+  <a
+    routerLink=""
+    class="px-4 py-1 text-white transition-all duration-300 bg-teal-600 rounded-lg mr-96 hover:bg-teal-800">
+    Go back</a>
 </div>

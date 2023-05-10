@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
+function sum(a: number, b: number): number {
+  return a + b;
+}
 @Component({
   selector: 'app-olympic',
   templateUrl: './olympic.component.html',
@@ -17,7 +20,7 @@ export class OlympicComponent implements OnInit {
   public medals: number = 0;
   public athletes: number = 0;
 
-  public lineChartLabels: string[] = [];
+  public lineChartLabels: number[] = [];
   public lineChartDatasets: ChartDataset<'line', number[]>[] = [
     {
       data: [],
@@ -50,6 +53,58 @@ export class OlympicComponent implements OnInit {
       .subscribe(this._handleOlympics.bind(this));
   }
 
+  _computeLineChartData(): void {
+    if (!this.olympic) {
+      this.router.navigate(['/not-found']);
+      return;
+    }
+
+    this.entries = this.olympic.participations.length;
+
+    const [years, medals, athletes] = this.olympic.participations.reduce(
+      ([years, medals, athletes], participation) => {
+        years.push(participation.year);
+        medals.push(participation.medalsCount);
+        athletes.push(participation.athleteCount);
+
+        return [years, medals, athletes];
+      },
+      [[], [], []] as [number[], number[], number[]]
+    );
+
+    this.medals = medals.reduce(sum, 0);
+    this.athletes = athletes.reduce(sum, 0);
+
+    console.log(years);
+
+    const [lowestYear, highestYear] = [Math.min(...years), Math.max(...years)];
+
+    const labels = [];
+    const data = [];
+
+    for (let year = lowestYear; year <= highestYear; year++) {
+      const participation = this.olympic.participations.find(
+        (p) => p.year === year
+      );
+
+      if (participation) {
+        labels.push(year);
+        data.push(participation.medalsCount);
+
+        continue;
+      }
+
+      if ((year - lowestYear) % 2 === 1) continue;
+      if (highestYear - year < 2) continue;
+
+      labels.push(year);
+      data.push(NaN);
+    }
+
+    this.lineChartLabels = labels;
+    this.lineChartDatasets[0].data = data;
+  }
+
   _handleOlympics(olympics: Olympic[]): void {
     if (!olympics || olympics.length === 0) return;
 
@@ -61,58 +116,7 @@ export class OlympicComponent implements OnInit {
 
     this.olympic = olympics.find((o) => o.id === id);
 
-    if (!this.olympic) {
-      this.router.navigate(['/not-found']);
-      return;
-    }
-
-    this.entries = this.olympic.participations.length;
-    this.medals = this.olympic.participations
-      .map((p) => p.medalsCount)
-      .reduce((a, b) => a + b, 0);
-    this.athletes = this.olympic.participations
-      .map((p) => p.athleteCount)
-      .reduce((a, b) => a + b, 0);
-
-    const lowestYear = Math.min(
-      ...this.olympic.participations.map((p) => p.year)
-    );
-
-    const highestYear = Math.max(
-      ...this.olympic.participations.map((p) => p.year)
-    );
-
-    const labels = [];
-    const data = [];
-
-    for (let year = lowestYear; year <= highestYear; year++) {
-      const participation = this.olympic.participations.find(
-        (p) => p.year === year
-      );
-
-      if (participation) {
-        labels.push(year.toString());
-        data.push(participation.medalsCount);
-
-        continue;
-      }
-
-      if ((year - lowestYear) % 2 === 1) continue;
-      if (highestYear - year < 2) continue;
-
-      labels.push(year.toString());
-      data.push(NaN);
-    }
-
-    this.lineChartLabels = labels;
-    this.lineChartDatasets[0].data = data;
-
-    // this.lineChartLabels = this.olympic.participations.map((p) =>
-    //   p.year.toString()
-    // );
-    // this.lineChartDatasets[0].data = this.olympic.participations.map(
-    //   (p) => p.medalsCount
-    // );
+    this._computeLineChartData();
   }
 
   ngOnDestroy(): void {

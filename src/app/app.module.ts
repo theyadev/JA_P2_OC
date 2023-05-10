@@ -10,7 +10,13 @@ import { InfoBoxComponent } from './info-box/info-box.component';
 import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent, InfoBoxComponent, OlympicComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent,
+    InfoBoxComponent,
+    OlympicComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
