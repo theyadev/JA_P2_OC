@@ -1,7 +1,24 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
-
-<div *ngFor="let olympic of olympics$ | async; $">
-  {{ olympic.id }} - {{ olympic.country }}
+<div class="p-4 flex flex-col items-center gap-y-4 font-light">
+  <h1 class="text-2xl bg-teal-600 px-8 py-1 w-max rounded-lg text-white">
+    Medals per Country
+  </h1>
+  <div class="grid grid-cols-2 gap-x-8">
+    <app-info-box title="Number of JOs" [value]="noJOs"></app-info-box>
+    <app-info-box
+      title="Number of countries"
+      [value]="(olympics$ | async)?.length"
+    ></app-info-box>
+  </div>
+  <hr />
+  <canvas
+    class="w-96"
+    baseChart
+    [type]="'pie'"
+    [datasets]="pieChartDatasets"
+    [labels]="pieChartLabels"
+    [options]="pieChartOptions"
+    [legend]="pieChartLegend"
+    (chartClick)="onChartClick($event)"
+  >
+  </canvas>
 </div>
