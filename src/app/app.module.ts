@@ -5,11 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { OlympicComponent } from './pages/olympic/olympic.component';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent, InfoBoxComponent],
+  declarations: [AppComponent, HomeComponent, NotFoundComponent, InfoBoxComponent, OlympicComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],

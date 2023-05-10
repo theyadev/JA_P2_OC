@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   public pieChartDatasets: ChartDataset<'pie', number[]>[] = [
     {
       data: [],
+      label: 'Medals',
     },
   ];
   public pieChartLegend = false;
