@@ -75,8 +75,6 @@ export class OlympicComponent implements OnInit {
     this.medals = medals.reduce(sum, 0);
     this.athletes = athletes.reduce(sum, 0);
 
-    console.log(years);
-
     const [lowestYear, highestYear] = [Math.min(...years), Math.max(...years)];
 
     const labels = [];
