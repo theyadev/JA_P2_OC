@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
       label: 'Medals',
     },
   ];
-  public pieChartLegend = false;
+  public pieChartLegend = true;
 
   private pieChartIds: number[] = [];
   private subscription?: Subscription;
